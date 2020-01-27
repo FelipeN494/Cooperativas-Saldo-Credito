@@ -49,7 +49,7 @@ SCCPT[,2] <- as.numeric(SCCPT[,2])
 SCCPT[,3] <- as.numeric(SCCPT[,3])
 ```
 
-Em seguida, se criou uma nova variÃ¡vel e um gráfico de barras para essas informações, mas sem alterar as variáveis anteriores:
+Em seguida, se criou uma nova variável e um gráfico de barras para essas informações, mas sem alterar as variáveis anteriores:
 
 ```{r}
 SCCPT2 <- melt(SCCPT,id.vars = "Data")
