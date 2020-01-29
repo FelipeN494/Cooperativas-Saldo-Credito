@@ -19,6 +19,7 @@ R Core Team (2019). R: A language and environment for statistical computing. R
 Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
 BANCO CENTRAL DO BRASIL/DEPEF. Saldo de crédito das cooperativas para clientes pessoa física - total. Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25518-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica----total>. Acesso em: 26 jan. 2020.
 
+Referências dados:
 BANCO CENTRAL DO BRASIL/DEPEF.Saldo de crédito das cooperativas para clientes pessoa juridica - total.Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25519-saldo-de-credito-das-cooperativas-para-clientes-pessoa-juridica----total>. Acesso em 26 jan. 2020.
 
 BANCO CENTRAL DO BRASIL/DEPEF. Saldo de crédito das cooperativas para clientes pessoa física por faixa de valor - menor que R$ 1 mil. Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25536-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica-por-faixa-de-valor---menor-que->. Acesso em 28 jan 2020.
