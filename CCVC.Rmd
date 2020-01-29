@@ -136,17 +136,17 @@ ggplot(data=SCCPT3, aes(x = SCCPT3[, 1], y = values)) +
 Base de Dados:
 BANCO CENTRAL DO BRASIL/DEPEF. Saldo de crédito das cooperativas para clientes pessoa física - total. Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25518-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica----total>. Acesso em: 26 jan. 2020.
 
-BANCO CENTRAL DO BRASIL/DEPEF.Saldo de crédito das cooperativas para clientes pessoa juridica - total.Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25519-saldo-de-credito-das-cooperativas-para-clientes-pessoa-juridica----total>. Acesso em 26 jan. 2020.
+BANCO CENTRAL DO BRASIL/DEPEF.Saldo de crédito das cooperativas para clientes pessoa juridica - total.Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25519-saldo-de-credito-das-cooperativas-para-clientes-pessoa-juridica----total>. Acesso em: 26 jan. 2020.
 
-BANCO CENTRAL DO BRASIL/DEPEF. Saldo de crédito das cooperativas para clientes pessoa física por faixa de valor - menor que R$ 1 mil. Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25536-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica-por-faixa-de-valor---menor-que->. Acesso em 28 jan 2020.
+BANCO CENTRAL DO BRASIL/DEPEF. Saldo de crédito das cooperativas para clientes pessoa física por faixa de valor - menor que R$ 1 mil. Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25536-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica-por-faixa-de-valor---menor-que->. Acesso em: 28 jan 2020.
 
 BANCO CENTRAL DO BRASIL/DEPEF. Saldo de crédito das cooperativas para clientes pessoa física por faixa de valor - de R$ 1 mil a R$ 5 mil.
 Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25537-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica-por-faixa-de-valor---de-rs-1-mi>. Acesso em: 28 jan 2020.
 
 BANCO CENTRAL DO BRASIL/DEPEF.Saldo de crédito das cooperativas para clientes pessoa física por faixa de valor - de R$ 5 mil a R$ 10 mil. 
- Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25538-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica-por-faixa-de-valor---de-rs-5-mi>. Acesso em 28 jan 2020.
+ Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25538-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica-por-faixa-de-valor---de-rs-5-mi>. Acesso em: 28 jan 2020.
 
-BANCO CENTRAL DO BRASIL/DEPEF.Saldo de crédito das cooperativas para clientes pessoa física por faixa de valor - acima de R$ 10 mil. Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25539-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica-por-faixa-de-valor---acima-de-r>.
+BANCO CENTRAL DO BRASIL/DEPEF.Saldo de crédito das cooperativas para clientes pessoa física por faixa de valor - acima de R$ 10 mil. Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25539-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica-por-faixa-de-valor---acima-de-r>.Acesso em: 28 jan 2020.
 
 
 Pacotes usados:
