@@ -4,6 +4,10 @@ Sobre os nomes dos arquivos:
 SCCPT - Refere-se ao código para a construção dos gráficos sobre o Valor Total Saldo de Crédito das Cooperativas segundo o tipo de pessoa.
 CCVC - Refere-se ao código para a construção dos gráficos sobre o Valor Total do Saldo de Crédito das Cooperativas segundo o valor para pessoas físicas.
 
+Os referidos arquivos também estão disponíveis na formatação html, no Rpubs, nos links: 
+https://rpubs.com/FelipeN94/CCVC
+https://rpubs.com/FelipeN94/SCCPT
+
 REFERÊNCIAS:
 
 Pacotes usados:
