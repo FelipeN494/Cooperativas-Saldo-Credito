@@ -1,9 +1,15 @@
 # Saldo-Crédito-COOPS
-O objetivo deste projeto é coletar e vizualizar dados sobre saldo de crédito, principalmetne das pessoas físicas, das cooperativas financeiras partindo de informações obtidas no site do Banco Central do Brasil/Departamento de Promoção Da Cidadania Financeira. Inicialmente são coletados os dados e criados gráficos sobre o saldo de crédito segundo diversos tipos (por valor, por pessoa, etc) e criados gráficos simples para sua visualização.  O objetivo final é criar um "aplicativo" que permita visualizar essas informações na forma de múltiplos gráficos com a possíbilidade de interação usando o "R shiny". 
+O objetivo deste projeto é coletar e vizualizar dados sobre saldo de crédito, principalmetne das pessoas físicas, das cooperativas financeiras partindo de informações obtidas no site do Banco Central do Brasil/Departamento de Promoção Da Cidadania Financeira. Inicialmente são coletados os dados e criados gráficos sobre o saldo de crédito segundo diversos tipos (por valor, por pessoa, etc) e criados gráficos simples para sua visualização.   
+
 Sobre os nomes dos arquivos:
+
+
 SCCPT - Refere-se ao código para a construção dos gráficos sobre o Valor Total Saldo de Crédito das Cooperativas segundo o tipo de pessoa.
+
 CCVC - Refere-se ao código para a construção dos gráficos sobre o Saldo de crédito das cooperativas para clientes pessoas físicas segundo a faixa de valor.
+
 CSTR - Refere-se ao Código utilizado para a construção dos gráficos sobre o Saldo de crédito das cooperativas para clientes pessoa físicas por região.
+
 Os referidos arquivos também estão disponíveis na formatação html, no Rpubs, nos links: 
 https://rpubs.com/FelipeN94/CCVC
 https://rpubs.com/FelipeN94/SCCPT
