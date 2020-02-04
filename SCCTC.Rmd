@@ -1,0 +1,260 @@
+---
+title: "SCCTC"
+author: "FelipeN"
+date: "03/02/2020"
+output: html_document
+---
+O objetivo desse documento é analisar o saldo de crédito e de empréstimo para pessoa física por tipo (em R$ milhões). 
+Inicialmente, baixam-se as bibliotecas:
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(reshape2)
+```
+
+Em seguida são importados os valores e atribuidos a variáveis.
+
+```{r}
+#Saldo de crédito das cooperativas para clientes pessoa física - adiantamento a depositantes
+SCCAD <- read.csv2("bcdata.sgs.25523.csv")
+#Saldo de crédito das cooperativas para clientes pessoa física - títulos descontados
+SCCTD <- read.csv2("bcdata.sgs.25524.csv")
+#Saldo de crédito das cooperativas para clientes pessoa física - financiamentos rurais e agroindustriais
+SCCFRA <- read.csv2("bcdata.sgs.25525.csv")
+#Saldo de crédito das cooperativas para clientes pessoa física - outros créditos
+SCCOC <- read.csv2("bcdata.sgs.25526.csv")
+#Saldo de crédito das cooperativas para clientes pessoa física - empréstimo
+SCCE <- read.csv2("bcdata.sgs.25527.csv")
+#Saldo de empréstimos das cooperativas para clientes pessoa física - crédito pessoal sem consignação
+SCCCPC <- read.csv2("bcdata.sgs.25528.csv")
+#Saldo de empréstimos das cooperativas para clientes pessoa física - crédito pessoal com consignação
+SCCCC <- read.csv2("bcdata.sgs.25529.csv")
+#Saldo de empréstimos das cooperativas para clientes pessoa física - cheque especial e conta garantida
+SCCEC <- read.csv2("bcdata.sgs.25530.csv")
+#Saldo de empréstimos das cooperativas para clientes pessoa física - outros
+SECO <- read.csv2("bcdata.sgs.25531.csv")
+#Saldo de crédito das cooperativas para clientes pessoa física - financiamento (excluindo financiamento rural e agroindustrial)
+SCCF <- read.csv2("bcdata.sgs.25532.csv")
+#Saldo de financiamento das cooperativas para clientes pessoa física - financiamento de veículos
+SFCFV <- read.csv2("bcdata.sgs.25533.csv")
+#Saldo de financiamento das cooperativas para clientes pessoa física - financiamento de outros bens
+SFCF <- read.csv2("bcdata.sgs.25534.csv")
+#Saldo de financiamento das cooperativas para clientes pessoa física - outros
+SFCO <- read.csv2("bcdata.sgs.25535.csv")
+```
+
+Juntando todas as variáveis, temos:
+```{r}
+SCT1 <- merge(SCCAD, SCCCC, by=c("data"))
+SCT2 <- merge(SCCCPC, SCCE, by=c("data"))
+SCT3 <- merge(SCCEC, SCCF, by=c("data"))
+SCT4 <- merge(SCCFRA, SCCOC, by=c("data"))
+SCT5 <- merge(SCCTD, SECO, by=c("data"))
+SCT6 <- merge(SFCF, SFCO, by=c("data"))
+SCT7 <- merge(SCT1, SCT2, by=c("data"))
+SCT8 <- merge(SCT3,SCT4, by=c("data"))
+SCT9 <- merge(SCT5,SCT6,by=c("data"))
+SCT10 <- merge(SCT7,SCT8, by=c("data"))
+SCCTC <- merge(SCT9,SCT10, by=c("data"))
+SCCTC <- merge(SCCTC,SFCFV, by=c("data"))
+colnames(SCCTC) <- c("Data", "SCCTD", "SECO", "SFCF", "SFCO", "SCCAD", "SCCCC", "SCCCPC", "SCCE", "SCCEC", "SCCF", "SCCFRA", "SCCOC", "SFCFV")
+```
+
+
+Juntando tudo com os códigos anteriores, temos:
+
+```{r}
+SCCPJ <- read.csv2("bcdata.sgs.25519.csv")
+SCCPF <- read.csv2("bcdata.sgs.25518.csv")
+SCCPT <- merge(SCCPJ,SCCPF, by=c("data"))
+SCCPT <- rename(SCCPT, Valor.PJ = valor.x, Valor.PF = valor.y, Data = data)
+SCCPT[,2] <- as.numeric(SCCPT[,2])
+SCCPT[,3] <- as.numeric(SCCPT[,3])
+C1M <- read.csv2("bcdata.sgs.25536.csv")
+C51M <- read.csv2("bcdata.sgs.25537.csv")
+C510M <- read.csv2("bcdata.sgs.25538.csv")
+C10M <- read.csv2("bcdata.sgs.25539.csv")
+CF1 <- merge(C1M, C51M, by=c("data")) 
+CF2 <- merge(C510M, C10M, by=c("data"))
+CF3 <- merge(CF1, CF2, by=c("data"))
+colnames(CF3) <- c("Data", "1", "1-5", "5-10", "10")
+SCCPT <- merge(SCCPT, CF3, by=c("Data")) 
+SCCPT[,4] <- as.numeric(SCCPT[,4])
+SCCPT[,5] <- as.numeric(SCCPT[,5])
+SCCPT[,6] <- as.numeric(SCCPT[,6])
+SCCPT[,7] <- as.numeric(SCCPT[,7])
+CO <- read.csv2("bcdata.sgs.25540.csv")
+NE <- read.csv2("bcdata.sgs.25541.csv")
+NO <- read.csv2("bcdata.sgs.25542.csv")
+SE <- read.csv2("bcdata.sgs.25543.csv")
+S <- read.csv2("bcdata.sgs.25544.csv")
+RE1 <- merge(CO, NE, by=c("data")) 
+RE2 <- merge(NO, S, by=c("data"))
+RE3 <- merge(SE, RE1, by=c("data"))
+RE4 <- merge(RE2, RE3, by=c("data"))
+colnames(RE4) <- c("Data", "NO", "S", "SE", "CO", "NE")
+SCCPT <- merge(SCCPT, RE4, by=c("Data")) 
+SCCPT[,8] <- as.numeric(SCCPT[,8])
+SCCPT[,9] <- as.numeric(SCCPT[,9])
+SCCPT[,10] <- as.numeric(SCCPT[,10])
+SCCPT[,11] <- as.numeric(SCCPT[,11])
+SCCPT[,12] <- as.numeric(SCCPT[,12])
+
+```
+
+visualizando a tabela SCCPT temos:
+```{r}
+SCCPT
+```
+
+Juntando agora com o Saldo de Crédito das Cooperativas segundo o Tipo de crédito e o Saldo de Empréstimos das Coopearativas segundo o tipo, e colocando todas as colunas como "numeric" temos:
+
+```{r}
+SCCPT <- merge(SCCPT, SCCTC, by=c("Data")) 
+SCCPT[,13] <- as.numeric(SCCPT[,13])
+SCCPT[,14] <- as.numeric(SCCPT[,14])
+SCCPT[,15] <- as.numeric(SCCPT[,15])
+SCCPT[,16] <- as.numeric(SCCPT[,16])
+SCCPT[,17] <- as.numeric(SCCPT[,17])
+SCCPT[,18] <- as.numeric(SCCPT[,18])
+SCCPT[,19] <- as.numeric(SCCPT[,19])
+SCCPT[,20] <- as.numeric(SCCPT[,20])
+SCCPT[,21] <- as.numeric(SCCPT[,21])
+SCCPT[,22] <- as.numeric(SCCPT[,22])
+SCCPT[,23] <- as.numeric(SCCPT[,23])
+SCCPT[,24] <- as.numeric(SCCPT[,24])
+```
+
+Colocando as datas no formato anual e numérico podemos passar para a criação dos gráficos. Para uma observação mais cuidadosa, separou-se as variávies sobre o saldo de crédito das variávies sobre valores de financiamentos e de empréstimos. Começando para as variáveis sobre o saldo de crédito, têm-se:
+
+```{r}
+SCCPT6 <- SCCPT[,-c(14,15,16,18,19,21,25)]
+SCCPT6 <- cbind(SCCPT6[,1], stack(SCCPT6[,13:18]))
+colnames(SCCPT6) <- c("Data", "values", "ind")
+SCCPT6$Data <- as.Date(SCCPT6$Data, "%d/%m/%Y")
+SCCPT6$Data <- as.numeric(format(SCCPT6$Data,"%Y"))
+ggplot(SCCPT6, mapping=aes(x=SCCPT6$Data, y=SCCPT6$value)) + 
+  geom_bar(mapping=aes(fill=SCCPT6$ind), stat="identity", position='dodge') +   scale_y_continuous(limits=c(0,43000), expand=c(0,0)) +
+  scale_x_discrete(limits=c(2012,2013,2014,2015,2016,2017,2018), expand=c(0,0)) +
+  theme(text=element_text(size=10)) +
+  labs(title="Saldo de Crédito das Cooperativas segundo o tipo de crédito por ano", x ="Ano", 
+       y = "Valor aproximado em R$(milhões)", caption="Fonte: BCB/Depef", fill="Legenda") +
+  scale_fill_brewer(palette="Set2")
+```
+
+AO observar o gráfico podemos concluir que os maiores valores do saldo de crédito das cooperativas para clientes pessoas físicas no período de 2012-2018 foram os do "financiamentos rurais e agroindustriais" (SCCFRA) e os empréstimos (SCCE); ambos apresentando tendências crescentes no período.
+
+Se formos olhar os valores dos empréstimos (variáveis: SCCCPC, SCCCC, SCCEC, SECO) temso o gráfico:
+
+```{r}
+SCCPT7 <- SCCPT[,c(1,14,18,19,21)]
+SCCPT7 <- cbind(SCCPT7[,1], stack(SCCPT7[,2:5]))
+colnames(SCCPT7) <- c("Data", "values", "ind")
+SCCPT7$Data <- as.Date(SCCPT7$Data, "%d/%m/%Y")
+SCCPT7$Data <- as.numeric(format(SCCPT7$Data,"%Y"))
+ggplot(SCCPT7, mapping=aes(x=SCCPT7$Data, y=SCCPT7$value)) + 
+  geom_bar(mapping=aes(fill=SCCPT7$ind), stat="identity", position='dodge') +   scale_y_continuous(limits=c(0,19000), expand=c(0,0)) +
+  scale_x_discrete(limits=c(2012,2013,2014,2015,2016,2017,2018), expand=c(0,0)) +
+  theme(text=element_text(size=10)) +
+  labs(title="Saldo de Empréstimo das Cooperativas segundo o tipo de empréstimo por ano", x ="Ano", 
+       y = "Valor aproximado em R$(milhões)", caption="Fonte: BCB/Depef", fill="Legenda") +
+  scale_fill_brewer(palette="Accent")
+```
+
+Nota-se que o maior volume do saldo de empréstimos das cooperativas para clientes pessoas físicas consiste no crédito sem consignação (SCCCPC), com esse valor crescendo (em termos absolutos) no período da série. Todavia, os empréstimos com consignação (SCCCC) também apresentam crescimento forte em termos absolutos.
+
+Por fim, pode-se olhar para  o saldo de financiamento:
+```{r}
+SCCPT8 <- SCCPT[,c(1,15,16,25)]
+SCCPT8 <- cbind(SCCPT8[,1], stack(SCCPT8[,2:4]))
+colnames(SCCPT8) <- c("Data", "values", "ind")
+SCCPT8$Data <- as.Date(SCCPT8$Data, "%d/%m/%Y")
+SCCPT8$Data <- as.numeric(format(SCCPT8$Data,"%Y"))
+ggplot(SCCPT8, mapping=aes(x=SCCPT8$Data, y=SCCPT8$value)) + 
+  geom_bar(mapping=aes(fill=SCCPT8$ind), stat="identity", position='dodge') +   scale_y_continuous(limits=c(0,5900), expand=c(0,0)) +
+  scale_x_discrete(limits=c(2012,2013,2014,2015,2016,2017,2018), expand=c(0,0)) +
+  theme(text=element_text(size=10)) +
+  labs(title="Saldo de financiamento das Cooperativas segundo o tipo de financiamento por ano", x ="Ano", 
+       y = "Valor aproximado em R$(milhões)", caption="Fonte: BCB/Depef", fill="Legenda") +
+  scale_fill_brewer(palette="Dark2")
+```
+
+Nota-se que o financiametno das cooperativas para clientes pessoas físicas consistem principalmente no financiamento de veículos e de outros bens (SFCFV e SFCF respectivamente). Nota-se que o valor no financiamento de veículos cresce até 2014, com queda entre 2015 e 2017, e atinge o pico em 2018. Ainda, o financiamento de outros bens cresce entre 2012 e 2018. Já os demais financiamentos (SFCO) permaneceram contantes.
+
+#Saldo de financiamento das cooperativas para clientes pessoa física - financiamento de veículos
+SFCFV <- read.csv2("bcdata.sgs.25533.csv")
+#Saldo de financiamento das cooperativas para clientes pessoa física - financiamento de outros bens
+SFCF <- read.csv2("bcdata.sgs.25534.csv")
+#Saldo de financiamento das cooperativas para clientes pessoa física - outros
+SFCO <- read.csv2("bcdata.sgs.25535.csv")
+
+Referências:
+BANCO CENTRAL DO BRASIL/DEPEF. Saldo de crédito das cooperativas para clientes pessoa física - total. Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25518-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica----total>. Acesso em: 26 jan. 2020.
+
+BANCO CENTRAL DO BRASIL/DEPEF.Saldo de crédito das cooperativas para clientes pessoa juridica - total.Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25519-saldo-de-credito-das-cooperativas-para-clientes-pessoa-juridica----total>. Acesso em: 26 jan. 2020.
+
+BANCO CENTRAL DO BRASIL/DEPEF. Saldo de crédito das cooperativas para clientes pessoa física por faixa de valor - menor que R$ 1 mil. Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25536-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica-por-faixa-de-valor---menor-que->. Acesso em: 28 jan 2020.
+
+BANCO CENTRAL DO BRASIL/DEPEF. Saldo de crédito das cooperativas para clientes pessoa física por faixa de valor - de R$ 1 mil a R$ 5 mil.
+Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25537-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica-por-faixa-de-valor---de-rs-1-mi>. Acesso em: 28 jan 2020.
+
+BANCO CENTRAL DO BRASIL/DEPEF.Saldo de crédito das cooperativas para clientes pessoa física por faixa de valor - de R$ 5 mil a R$ 10 mil. 
+ Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25538-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica-por-faixa-de-valor---de-rs-5-mi>. Acesso em: 28 jan 2020.
+
+BANCO CENTRAL DO BRASIL/DEPEF.Saldo de crédito das cooperativas para clientes pessoa física por faixa de valor - acima de R$ 10 mil. Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25539-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica-por-faixa-de-valor---acima-de-r>. Acesso em: 28 jan 2020.
+
+BANCO CENTRAL DO BRASIL/DEPEF.Saldo de crédito das cooperativas para clientes pessoa física por região - Sul. Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25544-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica-por-regiao---sul>. Acesso em: 30 jan. 2020.
+
+BANCO CENTRAL DO BRASIL/DEPEF.Saldo de crédito das cooperativas para clientes pessoa física por região - Sudeste. Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25543-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica-por-regiao---sudeste>. Acesso em: 30 jan. 2020.
+
+
+BANCO CENTRAL DO BRASIL/DEPEF.Saldo de crédito das cooperativas para clientes pessoa física por região - Norte. Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25542-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica-por-regiao---norte>. Acesso em: 30 jan. 2020.
+
+BANCO CENTRAL DO BRASIL/DEPEF.Saldo de crédito das cooperativas para clientes pessoa física por região - Nordeste.Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25541-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica-por-regiao---nordeste>. Acesso em: 30 jan. 2020.
+
+BANCO CENTRAL DO BRASIL/DEPEF.Saldo de crédito das cooperativas para clientes pessoa física por região - Centro-Oeste. Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25540-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica-por-regiao---centro-oeste>. Acesso em: 30 jan. 2020.
+
+ANCO CENTRAL DO BRASIL/DEPEF.Saldo de crédito das cooperativas para clientes pessoa física - adiantamento a depositantes. Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25523-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica----adiantamento-a-depositantes> Acesso em: 03 fev. 2020. 
+
+BANCO CENTRAL DO BRASIL/DEPEF.Saldo de crédito das cooperativas para clientes pessoa física - títulos descontados. Disponível em: <http://dadosabertos.bcb.gov.br/dataset/25524-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica----titulos-descontados>. Acesso em: 03 fev. 2020.
+
+BANCO CENTRAL DO BRASIL/DEPEF.Saldo de crédito das cooperativas para clientes pessoa física - financiamentos rurais e agroindustriais. Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25525-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica----financiamentos-rurais-e-agro>. Acesso em 03 fev 2020. 
+
+BANCO CENTRAL DO BRASIL/DEPEF.Saldo de crédito das cooperativas para clientes pessoa física - outros créditos.
+Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25526-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica----outros-creditos>. Acesso em: 03 fev. 2020.
+
+BANCO CENTRAL DO BRASIL/DEPEF.Saldo de crédito das cooperativas para clientes pessoa física - empréstimo. Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25527-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica----emprestimo>. Acesso em: 03 fev. 2020.
+
+BANCO CENTRAL DO BRASIL/DEPEF.Saldo de empréstimos das cooperativas para clientes pessoa física - crédito pessoal sem consignação. Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25528-saldo-de-emprestimos-das-cooperativas-para-clientes-pessoa-fisica----credito-pessoal-sem-cons>. Acesso em: 03 fev. 2020.
+
+BANCO CENTRAL DO BRASIL/DEPEF.Saldo de empréstimos das cooperativas para clientes pessoa física - crédito pessoal com consignação. Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25529-saldo-de-emprestimos-das-cooperativas-para-clientes-pessoa-fisica----credito-pessoal-com-cons>. Acesso em: 03 fev. 2020.
+
+BANCO CENTRAL DO BRASIL/DEPEF.Saldo de empréstimos das cooperativas para clientes pessoa física - cheque especial e conta garantida. Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25530-saldo-de-emprestimos-das-cooperativas-para-clientes-pessoa-fisica----cheque-especial-e-conta->. Acesso em: 03 fev. 2020.
+
+BANCO CENTRAL DO BRASIL/DEPEF.Saldo de empréstimos das cooperativas para clientes pessoa física - outros. Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25531-saldo-de-emprestimos-das-cooperativas-para-clientes-pessoa-fisica----outros>. Acesso em: 03 fev. 2020. 
+
+BANCO CENTRAL DO BRASIL/DEPEF.Saldo de crédito das cooperativas para clientes pessoa física - financiamento (excluindo financiamento rural e agroindustrial). Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25532-saldo-de-credito-das-cooperativas-para-clientes-pessoa-fisica----financiamento-excluindo-fina>. Acesso em: 03 fev. 2020. 
+
+BANCO CENTRAL DO BRASIL/DEPEF.Saldo de financiamento das cooperativas para clientes pessoa física - financiamento de veículos. Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25533-saldo-de-financiamento-das-cooperativas-para-clientes-pessoa-fisica----financiamento-de-veicu>. Acesso em: 03 fev. 2020.
+
+BANCO CENTRAL DO BRASIL/DEPEF.Saldo de financiamento das cooperativas para clientes pessoa física - financiamento de outros bens. Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25534-saldo-de-financiamento-das-cooperativas-para-clientes-pessoa-fisica----financiamento-de-outro>. Acesso em: 03 fev. 2020.
+
+BANCO CENTRAL DO BRASIL/DEPEF. Saldo de financiamento das cooperativas para clientes pessoa física - outros.Disponível em: <https://dadosabertos.bcb.gov.br/dataset/25535-saldo-de-financiamento-das-cooperativas-para-clientes-pessoa-fisica----outros>. Acesso em: 03 fev. 2020.
+
+Pacotes usados:
+
+Hadley Wickham (2007). Reshaping Data with the reshape Package. Journal of
+Statistical Software, 21(12), 1-20. URL http://www.jstatsoft.org/v21/i12/.
+  
+H. Wickham. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York,
+2016.
+
+Hadley Wickham (2017). tidyverse: Easily Install and Load the 'Tidyverse'. R package
+version 1.2.1. https://CRAN.R-project.org/package=tidyverse.
+
+Linguagem R:
+R Core Team (2019). R: A language and environment for statistical computing. R
+Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
+
+
