@@ -12,7 +12,8 @@ CSTR - Refere-se ao Código utilizado para a construção dos gráficos sobre o 
 SCCTF - unifica os arquivos anteriores. 
 
 O último arquivo também está formato de notebook em:
-https://rpubs.com/FelipeN94/SCCTF
+
+https://rpubs.com/FelipeN94/573964
 
 REFERÊNCIAS:
 
